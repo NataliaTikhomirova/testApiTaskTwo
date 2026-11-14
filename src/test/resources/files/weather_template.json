@@ -1,0 +1,13 @@
+{
+  "location": {
+    "name": "${city}",
+    "country": "${country}"
+  },
+  "current": {
+    "temp_c": ${tempC},
+    "humidity": ${humidity},
+    "condition": {
+      "text": "${condition}"
+    }
+  }
+}
