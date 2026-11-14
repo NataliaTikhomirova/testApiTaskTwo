@@ -3,6 +3,8 @@ package steps;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
+import io.qameta.allure.Allure;
+import io.qameta.allure.model.Status;
 import lombok.SneakyThrows;
 import api.model.WeatherResponse;
 import org.junit.jupiter.api.Assertions;
@@ -75,12 +77,23 @@ public class WeatherSteps {
         Utils.checkField(discrepancies, "current.humidity", expectedHumidity, actualResponse.getCurrent().getHumidity());
 
         if (discrepancies.isEmpty()) {
-            LOG.info(String.format("[OK] Город '%s': все поля полностью совпали с ожидаемыми.", currentCity));
+            String okMessage = String.format("[OK] Город '%s': все поля полностью совпали с ожидаемыми.", currentCity);
+            LOG.info(okMessage);
+            Allure.step(okMessage, Status.PASSED);
         } else {
-            LOG.warning(String.format("=== Расхождения для города '%s' ===", currentCity));
-            discrepancies.forEach(LOG::warning);
-            Assertions.fail(String.format("По городу '%s' найдено расхождений: %d", currentCity, discrepancies.size()));
+            String errorHeader = String.format("По городу '%s' найдено расхождений: %d", currentCity, discrepancies.size());
+            LOG.warning(errorHeader);
+
+            Allure.step(errorHeader, Status.FAILED);
+            discrepancies.forEach(item -> {
+                LOG.warning(item);
+                Allure.step(item, Status.FAILED);
+            });
+
+            Assertions.fail(errorHeader + "\n" + String.join("\n", discrepancies));
         }
+
+
     }
 
     private record MockWeatherData(String country, double tempC, String condition, int humidity) {}

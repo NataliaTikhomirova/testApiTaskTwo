@@ -7,8 +7,9 @@
     Тогда статус ответа должен быть <httpStatus>, а ошибка в теле ответа должна содержать сообщение "<expectedErrorMessage>"
 
     Примеры:
-      | description       | apiKey       | city           | httpStatus | expectedErrorMessage                     |
-      | Ключ не передан   |              | Moscow         | 401        | API key not provided.                    |
-      | Город не передан  | valid_key    |                | 400        | Parameter 'q' not provided.              |
-      | Город не найден   | valid_key    | UnknownCity999 | 400        | No location found matching parameter 'q' |
-      | Ключ заблокирован | disabled_key | London         | 403        | API key has been disabled.               |
+      | description               | apiKey       | city           | httpStatus | expectedErrorMessage                     |
+      | Ключ не передан           |              | Moscow         | 401        | API key not provided.                    |
+      | Город не передан          | valid_key    |                | 400        | Parameter 'q' not provided.              |
+      | Город не найден           | valid_key    | UnknownCity999 | 400        | No location found matching parameter 'q' |
+      | Ключ заблокирован         | disabled_key | London         | 403        | API key has been disabled.               |
+      | Внутренняя ошибка сервера | valid_key    | Berlin         | 500        | Internal application error.              |

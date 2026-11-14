@@ -3,6 +3,7 @@ package steps;
 import io.cucumber.java.ru.Дано;
 import io.cucumber.java.ru.Когда;
 import io.cucumber.java.ru.Тогда;
+import io.qameta.allure.Allure;
 import io.restassured.response.Response;
 import steps.hook.GetResponse;
 
@@ -37,10 +38,11 @@ public class WeatherNegativeSteps {
         int actualHttpStatus = response.getStatusCode();
         String actualErrorMessage = response.jsonPath().getString("error.message");
 
-        LOG.info(String.format(
+        String logMessage = String.format(
                 "Проверка ошибки -> HTTP: %d (ожидался %d) | Message: '%s'",
-                actualHttpStatus, expectedHttpStatus, actualErrorMessage
-        ));
+                actualHttpStatus, expectedHttpStatus, actualErrorMessage);
+        LOG.info(logMessage);
+        Allure.step(logMessage);
 
         assertEquals(expectedHttpStatus, actualHttpStatus, "Неверный HTTP-статус ответа");
         assertEquals(expectedErrorMessage, actualErrorMessage, "Неверное текст-сообщение об ошибке (error.message)");
